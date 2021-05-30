@@ -5,6 +5,6 @@ namespace MeetUp.Domain.Authentication
 {
     public interface IAccessTokenFactory
     {
-         Task<AccessToken> Create(User user, CancellationToken cancellationToken);
+        Task<AccessToken> Create(User user, CancellationToken cancellationToken);
     }
 }

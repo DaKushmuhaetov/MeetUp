@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace MeetUp.DatabaseMigrations.Entities
 {
@@ -15,5 +14,7 @@ namespace MeetUp.DatabaseMigrations.Entities
         public Guid IdAttribute { get; }
         public DateTime DateCreate { get; private set; }
         public DateTime DateLastEdit { get; private set; }
+        public List<Guid> LikePosts { get; private set; }
+        public List<Guid> RepostPosts { get; private set; }
     }
 }

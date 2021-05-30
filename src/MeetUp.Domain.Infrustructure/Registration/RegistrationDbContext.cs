@@ -1,10 +1,5 @@
 ﻿using MeetUp.Domain.Registration;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MeetUp.Domain.Infrustructure.Registration
 {
@@ -59,6 +54,31 @@ namespace MeetUp.Domain.Infrustructure.Registration
                 builder.Property("_concurrencyToken")
                     .HasColumnName("ConcurrencyToken")
                     .IsConcurrencyToken();
+            });
+
+            modelBuilder.Entity<UserAttribute>(builder =>
+            {
+                builder.ToTable("User");
+
+                builder.HasKey(o => o.Id);
+                builder.Property(o => o.Id)
+                    .HasColumnName("UserAttributeId")
+                    .ValueGeneratedNever()
+                    .IsRequired();
+
+                builder.Property(o => o.FirstName)
+                    .HasMaxLength(124)
+                    .IsRequired();
+
+                builder.Property(o => o.MiddleName)
+                   .HasMaxLength(124)
+                   .IsRequired();
+
+                builder.Property(o => o.LastName)
+                   .HasMaxLength(124);
+
+                builder.Property(o => o.DateOfBirth)
+                    .IsRequired();
             });
 
             base.OnModelCreating(modelBuilder);

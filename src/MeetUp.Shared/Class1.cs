@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MeetUp.Shared
+﻿namespace MeetUp.Shared
 {
     public class Class1
     {

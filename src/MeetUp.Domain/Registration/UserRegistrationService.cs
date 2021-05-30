@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,7 +13,7 @@ namespace MeetUp.Domain.Registration
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<User> CreateUser(string email,string login, string password,int level,string numberPhone,DateTime dateCreate,DateTime dateLastEdit, string firstName, string lastName,string middleName,string hobby, DateTime dateOfBirth , CancellationToken cancellationToken)
+        public async Task<User> CreateUser(string email, string login, string password, int level, string numberPhone, DateTime dateCreate, DateTime dateLastEdit, string firstName, string lastName, string middleName, string hobby, DateTime dateOfBirth, CancellationToken cancellationToken)
         {
             var hash = _passwordHasher.HashPassword(password);
 

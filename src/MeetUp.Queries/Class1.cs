@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace MeetUp.Queries
+﻿namespace MeetUp.Queries
 {
     public class Class1
     {

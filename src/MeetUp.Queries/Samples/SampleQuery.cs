@@ -1,7 +1,5 @@
 ﻿using MeetUp.Shared.CQRS;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MeetUp.Queries.Samples
 {
