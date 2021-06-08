@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MeetUp.Domain.Infrustructure.Meets
 {
-    public class MeetRepository
+    public class MeetRepository : IMeetRepository
     {
         private readonly MeetDbContext _context;
 

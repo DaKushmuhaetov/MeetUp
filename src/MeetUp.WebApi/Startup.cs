@@ -1,4 +1,5 @@
 using FluentValidation.AspNetCore;
+using MeetUp.Shared.CQRS;
 using MeetUp.WebApi.Extensions;
 using MeetUp.WebApi.Middlewares;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -82,6 +83,27 @@ namespace MeetUp.WebApi
                 options.AddPolicy("user", userPolicy.Build());
             });
             #endregion
+
+            services.AddScoped<Domain.Authentication.UserAuthenticationService>();
+
+            services.AddScoped<Domain.Authentication.IAccessTokenFactory, Domain.Infrustructure.Authentication.JwtAccessTokenFactory>();
+            services.AddScoped<Domain.Authentication.IPasswordHasher, Domain.Infrustructure.PasswordHasher.PasswordHasher>();
+            services.AddScoped<Domain.Authentication.IRefreshTokenStore, Domain.Infrustructure.RefreshTokenStore.RefreshTokenStore>();
+            services.AddScoped<Domain.Authentication.IUserGetter, Domain.Infrustructure.Authentication.UserGetter>();
+            services.AddNpgsqlDbContextPool<Domain.Infrustructure.Authentication.AuthenticationDbContext>(npgsqlConnectionString);
+
+            services.AddScoped<Domain.Meets.IMeetRepository, Domain.Infrustructure.Meets.MeetRepository>();
+            services.AddNpgsqlDbContextPool<Domain.Infrustructure.Meets.MeetDbContext>(npgsqlConnectionString);
+
+            services.AddScoped<Domain.Registration.IUserRepository, Domain.Infrustructure.Registration.UserRepository>();
+            services.AddScoped<Domain.Registration.IPasswordHasher, Domain.Infrustructure.PasswordHasher.PasswordHasher>();
+            services.AddNpgsqlDbContextPool<Domain.Infrustructure.Registration.RegistrationDbContext>(npgsqlConnectionString);
+
+            services.AddNpgsqlDbContextPool<Domain.Infrustructure.RefreshTokenStore.RefreshTokenStoreDbContext>(npgsqlConnectionString);
+
+            services.AddQueryProcessor<Queries.Infrustructure.Samples.SampleQueryHandler>();
+
+            services.AddNpgsqlDbContextPool<Queries.Infrustructure.Meets.MeetDbContext>(npgsqlConnectionString);
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

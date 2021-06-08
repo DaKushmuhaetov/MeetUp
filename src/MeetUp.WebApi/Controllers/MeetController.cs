@@ -1,7 +1,10 @@
 ﻿using MeetUp.Domain.Meets;
+using MeetUp.Queries.Users;
+using MeetUp.Shared.CQRS;
 using MeetUp.WebApi.Models.Meets;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -15,8 +18,6 @@ namespace MeetUp.WebApi.Controllers
         /// </summary>
         /// <param name="binding">Meet model</param>
         /// <response code="204">Successfully</response>
-        /// <response code="400">Invalid registration parameters format</response>
-        /// <response code="409">User with that email already registered</response>
         [HttpPost("/createMeet")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
@@ -45,6 +46,29 @@ namespace MeetUp.WebApi.Controllers
             {
                 return Conflict();
             }
+        }
+
+        /// <summary>
+        /// Get meet
+        /// </summary>
+        /// <param name="id">Meet Id</param>
+        /// <response code="204">Successfully</response>
+        [HttpPost("/createMeet")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 409)]
+        [ProducesResponseType(typeof(ProblemDetails), 412)]
+        public async Task<IActionResult> GetMeet(
+            CancellationToken cancellationToken,
+            [FromRoute] Guid id,
+            [FromServices] IQueryProcessor queryProcessor)
+        {
+            var user = queryProcessor.Process(new UserQuery(id), cancellationToken);
+
+            if(user == null)
+                return NotFound();
+            
+            return Ok(user);
         }
     }
 }
