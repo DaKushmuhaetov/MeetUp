@@ -5,6 +5,7 @@ namespace MeetUp.WebApi.Models.Meets
 {
     public class CreateMeetBinding
     {
+        public Guid Id { get; set; }
         public string Lat { get; set; }
         public string Ing { get; set; }
         public string Name { get; set; }

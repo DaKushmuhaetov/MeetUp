@@ -58,8 +58,6 @@ namespace MeetUp.WebApi.Extensions
                 options.MapType<Guid>(() => new OpenApiSchema { Type = "string", Format = "uuid", Default = new OpenApiString(Guid.NewGuid().ToString()) });
 
                 var basePath = AppDomain.CurrentDomain.BaseDirectory;
-                options.IncludeXmlComments(Path.Combine(basePath, "Instabrand.xml"));
-                options.IncludeXmlComments(Path.Combine(basePath, "Instabrand.Queries.xml"));
             });
         }
     }

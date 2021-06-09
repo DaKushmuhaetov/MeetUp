@@ -8,7 +8,8 @@ namespace MeetUp.DatabaseMigrations.Entities
         public Guid Id { get; private set; }
         public Guid PositionId { get; private set; }
         public string Name { get; private set; }
-        public List<Guid> Members { get; private set; }
+        public string Description { get; private set; }
+        public string Members { get; private set; }
         public DateTime DateOfStart { get; private set; }
         public List<Guid> Tags { get; private set; }
         public Guid CreatorId { get; private set; }

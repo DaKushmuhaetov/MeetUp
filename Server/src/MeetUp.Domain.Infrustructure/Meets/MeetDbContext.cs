@@ -1,5 +1,8 @@
 ﻿using MeetUp.Domain.Meets;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
 
 namespace MeetUp.Domain.Infrustructure.Meets
 {
@@ -34,10 +37,13 @@ namespace MeetUp.Domain.Infrustructure.Meets
                     .IsRequired();
 
                 builder.Property(o => o.Description)
-                    .HasMaxLength(2024)
-                    .IsRequired();
+                    .HasMaxLength(2024);
 
-                builder.Property(o => o.Members);
+                builder.Property(o => o.Members)
+                    .HasConversion(
+                        _ => JsonSerializer.Serialize(_, null),
+                        _ => JsonSerializer.Deserialize<List<Guid>>(_, null))
+                    .IsRequired(false);
 
                 builder.Property(o => o.DateOfStart)
                     .IsRequired();

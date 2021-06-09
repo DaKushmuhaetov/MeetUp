@@ -5,6 +5,7 @@ using MeetUp.WebApi.Models.Meets;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ namespace MeetUp.WebApi.Controllers
         /// </summary>
         /// <param name="binding">Meet model</param>
         /// <response code="204">Successfully</response>
-        [HttpPost("/createMeet")]
+        [HttpPost("/Meet")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 409)]
@@ -32,14 +33,25 @@ namespace MeetUp.WebApi.Controllers
             var position = await meetCreateService.CreatePosition(binding.Lat, binding.Ing);
             var post = await meetCreateService.CreatePost(binding.Name + "\n" + binding.Description, binding.CreatorId);
 
-            var meet = await meetCreateService.CreateMeet(position.Id, binding.Name, binding.Description,
-                binding.DateOfstart, binding.Tags, binding.CreatorId,
-                binding.Images, post.Id, cancellationToken);
+            var members = new List<Guid>();
+            members.Add(binding.CreatorId);
+
+            var meet = new Meet(
+                id: binding.Id,
+                positionId: position.Id,
+                name: binding.Name,
+                description: binding.Description,
+                members: members,
+                dateOfStart: binding.DateOfstart,
+                tags: binding.Tags,
+                creator: binding.CreatorId,
+                images: binding.Images,
+                postId: post.Id);
 
             try
             {
                 await meetRepository.Save(meet);
-                return NoContent();
+                return Ok(meet);
             }
             catch (DbUpdateException exception)
                when (((Npgsql.PostgresException)exception.InnerException)?.SqlState == "23505")
@@ -53,11 +65,9 @@ namespace MeetUp.WebApi.Controllers
         /// </summary>
         /// <param name="id">Meet Id</param>
         /// <response code="204">Successfully</response>
-        [HttpPost("/createMeet")]
+        [HttpGet("/Meet")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
-        [ProducesResponseType(typeof(ProblemDetails), 409)]
-        [ProducesResponseType(typeof(ProblemDetails), 412)]
         public async Task<IActionResult> GetMeet(
             CancellationToken cancellationToken,
             [FromRoute] Guid id,

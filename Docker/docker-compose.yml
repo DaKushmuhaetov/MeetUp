@@ -6,8 +6,7 @@ services:
     volumes:
       - /meetup-data/meetup/logs/webapi/:/app/logs
     environment:
-      - ConnectionStrings:MeetUp=Server=meetup-postgresdb;Port=5353;Database=${POSTGRES_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};
-
+      - ConnectionStrings:MeetUp=Server=meetup-postgresdb;Port=32768;Database=${POSTGRES_DB};User ID=${POSTGRES_USER};Password=${POSTGRES_PASSWORD};
     depends_on:
       - meetup-postgresdb
     restart: always
@@ -36,7 +35,7 @@ services:
         dockerfile: db.Dockerfile
     image: postgres:12.0-alpine
     ports:
-      - "5353:5353"
+      - "32768:5432"
     volumes:
       - ./postgres/postgresql.conf:/var/lib/postgresql/meetup/postgresql.conf
       - PGDATA:/var/lib/postgresql/data/meetup/

@@ -16,7 +16,7 @@ namespace MeetUp.Domain.Infrustructure.Authentication
 
                 builder.HasKey(o => o.Id);
                 builder.Property(o => o.Id)
-                    .HasColumnName("UserId")
+                    .HasColumnName("Id")
                     .ValueGeneratedNever()
                     .IsRequired();
 

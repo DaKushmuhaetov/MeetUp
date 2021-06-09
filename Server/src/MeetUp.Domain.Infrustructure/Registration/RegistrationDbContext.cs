@@ -17,7 +17,7 @@ namespace MeetUp.Domain.Infrustructure.Registration
 
                 builder.HasKey(o => o.Id);
                 builder.Property(o => o.Id)
-                    .HasColumnName("UserId")
+                    .HasColumnName("Id")
                     .ValueGeneratedNever()
                     .IsRequired();
 
@@ -51,18 +51,15 @@ namespace MeetUp.Domain.Infrustructure.Registration
                     .ValueGeneratedNever()
                     .IsRequired();
 
-                builder.Property("_concurrencyToken")
-                    .HasColumnName("ConcurrencyToken")
-                    .IsConcurrencyToken();
             });
 
             modelBuilder.Entity<UserAttribute>(builder =>
             {
-                builder.ToTable("User");
+                builder.ToTable("UserAttribute");
 
                 builder.HasKey(o => o.Id);
                 builder.Property(o => o.Id)
-                    .HasColumnName("UserAttributeId")
+                    .HasColumnName("Id")
                     .ValueGeneratedNever()
                     .IsRequired();
 

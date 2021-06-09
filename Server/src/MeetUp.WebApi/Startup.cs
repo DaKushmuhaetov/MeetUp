@@ -92,9 +92,11 @@ namespace MeetUp.WebApi
             services.AddScoped<Domain.Authentication.IUserGetter, Domain.Infrustructure.Authentication.UserGetter>();
             services.AddNpgsqlDbContextPool<Domain.Infrustructure.Authentication.AuthenticationDbContext>(npgsqlConnectionString);
 
+            services.AddScoped<Domain.Meets.MeetCreateService>();
             services.AddScoped<Domain.Meets.IMeetRepository, Domain.Infrustructure.Meets.MeetRepository>();
             services.AddNpgsqlDbContextPool<Domain.Infrustructure.Meets.MeetDbContext>(npgsqlConnectionString);
 
+            services.AddScoped<Domain.Registration.UserRegistrationService>();
             services.AddScoped<Domain.Registration.IUserRepository, Domain.Infrustructure.Registration.UserRepository>();
             services.AddScoped<Domain.Registration.IPasswordHasher, Domain.Infrustructure.PasswordHasher.PasswordHasher>();
             services.AddNpgsqlDbContextPool<Domain.Infrustructure.Registration.RegistrationDbContext>(npgsqlConnectionString);
@@ -104,6 +106,13 @@ namespace MeetUp.WebApi
             services.AddQueryProcessor<Queries.Infrustructure.Samples.SampleQueryHandler>();
 
             services.AddNpgsqlDbContextPool<Queries.Infrustructure.Meets.MeetDbContext>(npgsqlConnectionString);
+
+
+            #region DatabaseMigrations
+
+            services.AddNpgsqlDbContext<DatabaseMigrations.MeetUpDbContext>(npgsqlConnectionString);
+
+            #endregion
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -130,7 +139,7 @@ namespace MeetUp.WebApi
             });
 
             app.UseSwagger(options => { options.RouteTemplate = "{documentName}/swagger.json"; });
-            app.UseSwaggerUI(options => { options.SwaggerEndpoint("../v1/swagger.json", "Boxis Api v1"); });
+            app.UseSwaggerUI(options => { options.SwaggerEndpoint("../v1/swagger.json", "MeetUp Api v1"); });
 
             app.UseRewriter(new RewriteOptions().AddRedirect(@"^$", "swagger", (int)HttpStatusCode.Redirect));
 

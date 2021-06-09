@@ -67,7 +67,8 @@ namespace MeetUp.DatabaseMigrations
                     .HasMaxLength(512)
                     .IsRequired();
 
-                builder.Property(o => o.Members);
+                builder.Property(o => o.Members)
+                    .IsRequired(false);
 
                 builder.Property(o => o.DateOfStart)
                     .IsRequired();
