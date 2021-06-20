@@ -31,12 +31,12 @@ namespace MeetUp.Domain.Infrustructure.Meets
             return await _context.Meets.Where(o => o.Tags.Contains(tag.Result.Id)).ToListAsync(cancellationToken);
         }
 
-        public async Task Save(Meet meet)
+        public async Task Save(Meet meet, CancellationToken cancellationToken)
         {
             if (_context.Entry(meet).State == EntityState.Detached)
                 _context.Meets.Add(meet);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

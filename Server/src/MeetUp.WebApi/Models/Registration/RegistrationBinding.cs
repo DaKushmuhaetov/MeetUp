@@ -13,6 +13,7 @@ namespace MeetUp.WebApi.Models.Registration
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
+        public AuthType AuthTypeBinding { get; set; }
         public string Hobby { get; set; }
         public DateTime DateOfBirth { get; set; }
 
@@ -21,5 +22,11 @@ namespace MeetUp.WebApi.Models.Registration
         /// </summary>
         public string Password { get; set; }
 
+
+        public enum AuthType
+        {
+            Default,
+            Vk
+        }
     }
 }

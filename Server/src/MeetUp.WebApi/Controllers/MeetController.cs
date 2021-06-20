@@ -1,4 +1,5 @@
 ﻿using MeetUp.Domain.Meets;
+using MeetUp.Queries.Meets;
 using MeetUp.Queries.Users;
 using MeetUp.Shared.CQRS;
 using MeetUp.WebApi.Models.Meets;
@@ -50,7 +51,7 @@ namespace MeetUp.WebApi.Controllers
 
             try
             {
-                await meetRepository.Save(meet);
+                await meetRepository.Save(meet, cancellationToken);
                 return Ok(meet);
             }
             catch (DbUpdateException exception)
@@ -65,7 +66,7 @@ namespace MeetUp.WebApi.Controllers
         /// </summary>
         /// <param name="id">Meet Id</param>
         /// <response code="204">Successfully</response>
-        [HttpGet("/Meet")]
+        [HttpGet("/meet")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         public async Task<IActionResult> GetMeet(
@@ -73,12 +74,32 @@ namespace MeetUp.WebApi.Controllers
             [FromRoute] Guid id,
             [FromServices] IQueryProcessor queryProcessor)
         {
-            var user = queryProcessor.Process(new UserQuery(id), cancellationToken);
+            var user = await queryProcessor.Process(new UserQuery(id), cancellationToken);
 
             if(user == null)
                 return NotFound();
             
             return Ok(user);
+        }
+
+        /// <summary>
+        /// Get meets
+        /// </summary>
+        /// <response code="204">Successfully</response>
+        [HttpGet("/meets")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        public async Task<IActionResult> GetMeets(
+            CancellationToken cancellationToken,
+            [FromBody] GetMeetsBinding binding,
+            [FromServices] IQueryProcessor queryProcessor)
+        {
+            var users = await queryProcessor.Process(new MeetListQuery(binding.CreatorId, binding.Tags, binding.Offset, binding.Limit), cancellationToken);
+
+            if (users == null)
+                return NotFound();
+
+            return Ok(users);
         }
     }
 }

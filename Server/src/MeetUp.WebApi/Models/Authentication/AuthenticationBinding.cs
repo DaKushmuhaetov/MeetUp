@@ -24,6 +24,12 @@ namespace MeetUp.WebApi.Models.Authentication
         public string Password { get; set; }
 
         /// <summary>
+        /// AuthType
+        /// </summary>
+        [FromForm(Name = "authType")]
+        public AuthType AuthType { get; set; }
+
+        /// <summary>
         /// Refresh token (grant_type == refresh_token)
         /// </summary>
         [FromForm(Name = "refresh_token")]
@@ -54,5 +60,11 @@ namespace MeetUp.WebApi.Models.Authentication
     {
         Password,
         RefreshToken
+    }
+
+    public enum AuthType
+    {
+        Default,
+        Vk
     }
 }

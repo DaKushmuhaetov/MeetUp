@@ -11,6 +11,7 @@ namespace MeetUp.DatabaseMigrations.Entities
         public int Level { get; private set; }
         public string NumberPhone { get; private set; }
         public string Email { get; private set; }
+        public AuthType AuthType { get; set; }
         public Guid IdAttribute { get; }
         public DateTime DateCreate { get; private set; }
         public DateTime DateLastEdit { get; private set; }

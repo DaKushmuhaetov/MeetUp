@@ -9,6 +9,6 @@ namespace MeetUp.Domain.Meets
         Task<List<Meet>> FindByName(string name, CancellationToken cancellationToken);
         Task<List<Meet>> FindByTag(string nameTag, CancellationToken cancellationToken);
         Task<Tag> FindTag(string name, CancellationToken cancellationToken);
-        Task Save(Meet meet);
+        Task Save(Meet meet, CancellationToken cancellationToken);
     }
 }

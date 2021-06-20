@@ -32,6 +32,9 @@ namespace MeetUp.Domain.Infrustructure.Registration
                    .HasMaxLength(512)
                    .IsRequired();
 
+                builder.Property(o => o.AuthType)
+                    .IsRequired();
+
                 builder.Property(o => o.NumberPhone)
                    .HasMaxLength(12);
 

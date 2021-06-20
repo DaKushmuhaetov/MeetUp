@@ -25,6 +25,9 @@ namespace MeetUp.DatabaseMigrations
                 builder.HasIndex(o => o.Email)
                     .IsUnique();
 
+                builder.HasIndex(o => o.AuthType)
+                    .IsUnique();
+
                 builder.Property(o => o.DateCreate)
                     .IsRequired();
 

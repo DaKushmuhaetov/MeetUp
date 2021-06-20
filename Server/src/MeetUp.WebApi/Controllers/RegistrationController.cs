@@ -38,7 +38,7 @@ namespace MeetUp.WebApi.Controllers
             user = await registrationService.CreateUser(binding.Email,
                 binding.Login, binding.Password, 1, binding.NumberPhone,
                 DateTime.Now, DateTime.Now, binding.FirstName, binding.LastName,
-                binding.MiddleName, binding.Hobby, binding.DateOfBirth, cancellationToken);
+                binding.MiddleName, binding.Hobby, binding.DateOfBirth, (AuthType)binding.AuthTypeBinding, cancellationToken);
 
             try
             {
