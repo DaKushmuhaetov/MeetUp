@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace MeetUp.Queries.Infrustructure.Meets
@@ -34,25 +35,25 @@ namespace MeetUp.Queries.Infrustructure.Meets
                     .HasMaxLength(512)
                     .IsRequired();
 
-                builder.Property(o => o.Description)
-                    .HasMaxLength(2024)
-                    .IsRequired();
-
-                builder.Property(o => o.Members);
+                builder.Property(o => o.Members)
+                     .HasConversion(
+                         _ => JsonSerializer.Serialize(_, null),
+                         _ => JsonSerializer.Deserialize<List<Guid>>(_, null))
+                     .IsRequired(false);
 
                 builder.Property(o => o.DateOfStart)
                     .IsRequired();
 
-                builder.Property(o => o.Tags)
-                    .IsRequired(false);
+                builder.Property(o => o.Description);
+
+                builder.Property(o => o.Tags);
 
                 builder.Property(o => o.CreatorId)
                     .HasColumnName("CreatorId")
                     .ValueGeneratedNever()
                     .IsRequired();
 
-                builder.Property(o => o.Images)
-                    .IsRequired(false);
+                builder.Property(o => o.Images);
 
                 builder.Property(o => o.PostId)
                     .HasColumnName("PostId")

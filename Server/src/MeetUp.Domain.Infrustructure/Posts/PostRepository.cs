@@ -9,13 +9,18 @@ using System.Threading.Tasks;
 
 namespace MeetUp.Domain.Infrustructure.Posts
 {
-    public class PostRepository
+    public class PostRepository : IPostRepository
     {
         private readonly PostDbContext _context;
 
         public PostRepository(PostDbContext context)
         {
             _context = context;
+        }
+
+        public async Task<List<Post>> FindPostByCreator(Guid id, CancellationToken cancellationToken)
+        {
+            return await _context.Posts.Where(o => o.Id == id).ToListAsync();
         }
 
         public async Task Save(Post post, CancellationToken cancellationToken)

@@ -51,6 +51,22 @@ namespace MeetUp.DatabaseMigrations
                     .IsRequired();
 
             });
+
+            modelBuilder.Entity<RefreshToken>(builder =>
+            {
+                builder.ToTable("RefreshToken");
+
+                builder.HasKey(o => o.RefreshTokenId);
+                builder.Property(o => o.RefreshTokenId)
+                    .HasMaxLength(64)
+                    .ValueGeneratedNever();
+
+                builder.Property(o => o.UserId)
+                    .IsRequired();
+                builder.Property(o => o.Expire)
+                    .IsRequired();
+            });
+
             modelBuilder.Entity<Meet>(builder =>
             {
                 builder.ToTable("Meet");
@@ -75,6 +91,8 @@ namespace MeetUp.DatabaseMigrations
 
                 builder.Property(o => o.DateOfStart)
                     .IsRequired();
+
+                builder.Property(o => o.Description);
 
                 builder.Property(o => o.Tags);
 

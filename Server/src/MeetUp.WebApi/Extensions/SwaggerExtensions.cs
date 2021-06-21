@@ -16,7 +16,7 @@ namespace MeetUp.WebApi.Extensions
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Boxis Api"
+                    Title = "MeetUp Api"
                 });
 
 

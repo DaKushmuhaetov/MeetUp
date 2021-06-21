@@ -60,7 +60,7 @@ namespace MeetUp.WebApi
                 o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+            }).AddJwtBearer("user", options =>
             {
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
@@ -82,6 +82,9 @@ namespace MeetUp.WebApi
                 var userPolicy = new AuthorizationPolicyBuilder("user").RequireAuthenticatedUser();
                 options.AddPolicy("user", userPolicy.Build());
             });
+
+            services.Configure<Domain.Infrustructure.Authentication.JwtAuthOptions>(
+                Configuration.GetSection("Auth:UserJwt"));
             #endregion
 
             services.AddScoped<Domain.Authentication.UserAuthenticationService>();
@@ -103,9 +106,12 @@ namespace MeetUp.WebApi
 
             services.AddNpgsqlDbContextPool<Domain.Infrustructure.RefreshTokenStore.RefreshTokenStoreDbContext>(npgsqlConnectionString);
 
-            services.AddQueryProcessor<Queries.Infrustructure.Samples.SampleQueryHandler>();
-
+            services.AddQueryProcessor<Queries.Infrustructure.Meets.MeetQueryHandler>();
             services.AddNpgsqlDbContextPool<Queries.Infrustructure.Meets.MeetDbContext>(npgsqlConnectionString);
+
+            services.AddScoped<Domain.Posts.IPostRepository, Domain.Infrustructure.Posts.PostRepository>();
+            services.AddNpgsqlDbContextPool<Domain.Infrustructure.Posts.PostDbContext>(npgsqlConnectionString);
+
 
 
             #region DatabaseMigrations

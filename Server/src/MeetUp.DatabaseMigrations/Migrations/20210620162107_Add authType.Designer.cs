@@ -4,15 +4,17 @@ using System.Collections.Generic;
 using MeetUp.DatabaseMigrations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MeetUp.DatabaseMigrations.Migrations
 {
     [DbContext(typeof(MeetUpDbContext))]
-    partial class MeetUpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210620162107_Add authType")]
+    partial class AddauthType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -110,23 +112,6 @@ namespace MeetUp.DatabaseMigrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Post");
-                });
-
-            modelBuilder.Entity("MeetUp.DatabaseMigrations.Entities.RefreshToken", b =>
-                {
-                    b.Property<string>("RefreshTokenId")
-                        .HasMaxLength(64)
-                        .HasColumnType("character varying(64)");
-
-                    b.Property<DateTime>("Expire")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("RefreshTokenId");
-
-                    b.ToTable("RefreshToken");
                 });
 
             modelBuilder.Entity("MeetUp.DatabaseMigrations.Entities.Tag", b =>

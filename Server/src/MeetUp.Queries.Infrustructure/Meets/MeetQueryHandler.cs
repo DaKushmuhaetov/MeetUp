@@ -36,7 +36,7 @@ namespace MeetUp.Queries.Infrustructure.Meets
                     PostId = o.PostId,
                     Tags = o.Tags
                 })
-                .SingleOrDefaultAsync();
+                .SingleOrDefaultAsync(cancellationToken);
 
             return meet;
         }

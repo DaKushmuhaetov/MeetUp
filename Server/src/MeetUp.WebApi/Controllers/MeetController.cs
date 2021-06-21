@@ -3,6 +3,7 @@ using MeetUp.Queries.Meets;
 using MeetUp.Queries.Users;
 using MeetUp.Shared.CQRS;
 using MeetUp.WebApi.Models.Meets;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,6 +21,7 @@ namespace MeetUp.WebApi.Controllers
         /// </summary>
         /// <param name="binding">Meet model</param>
         /// <response code="204">Successfully</response>
+        [Authorize(Policy = "user")]
         [HttpPost("/Meet")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
@@ -66,7 +68,8 @@ namespace MeetUp.WebApi.Controllers
         /// </summary>
         /// <param name="id">Meet Id</param>
         /// <response code="204">Successfully</response>
-        [HttpGet("/meet")]
+        [Authorize(Policy = "user")]
+        [HttpGet("/meet/{id}")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         public async Task<IActionResult> GetMeet(
@@ -74,24 +77,25 @@ namespace MeetUp.WebApi.Controllers
             [FromRoute] Guid id,
             [FromServices] IQueryProcessor queryProcessor)
         {
-            var user = await queryProcessor.Process(new UserQuery(id), cancellationToken);
+            var meet = await queryProcessor.Process(new MeetQuery(id), cancellationToken);
 
-            if(user == null)
+            if(meet == null)
                 return NotFound();
             
-            return Ok(user);
+            return Ok(meet);
         }
 
         /// <summary>
         /// Get meets
         /// </summary>
         /// <response code="204">Successfully</response>
+        [Authorize(Policy = "user")]
         [HttpGet("/meets")]
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         public async Task<IActionResult> GetMeets(
             CancellationToken cancellationToken,
-            [FromBody] GetMeetsBinding binding,
+            [FromQuery] GetMeetsBinding binding,
             [FromServices] IQueryProcessor queryProcessor)
         {
             var users = await queryProcessor.Process(new MeetListQuery(binding.CreatorId, binding.Tags, binding.Offset, binding.Limit), cancellationToken);
